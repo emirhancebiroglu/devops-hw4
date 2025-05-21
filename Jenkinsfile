@@ -19,7 +19,7 @@ pipeline {
 
         stage('Build JAR with Gradle') {
             steps {
-                bat './gradlew clean build'
+                bat 'gradlew.bat clean build'
             }
         }
 
