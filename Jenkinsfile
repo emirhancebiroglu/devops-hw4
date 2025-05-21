@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         DOCKER_IMAGE = 'emirhancebiroglu/devops-hw4:latest'
-        REGISTRY_URL = 'https://registry.hub.docker.com'
+        REGISTRY_URL = 'https://registry-1.docker.io/v2/'
     }
 
     triggers {
