@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Jenkins > Credentials'dan alınmalı
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         DOCKER_IMAGE = 'emirhancebiroglu/devops-hw4:latest'
-        REGISTRY_URL = ''
+        REGISTRY_URL = 'https://registry.hub.docker.com'
     }
 
     triggers {
-        githubPush() // triggerd push and merge
+        githubPush()
     }
 
     stages {
@@ -31,15 +31,13 @@ pipeline {
         }
 
         stage('Login to DockerHub') {
-                    steps {
-                        script {
-                            // Login only, no push here
-                            docker.withRegistry(REGISTRY_URL, DOCKERHUB_CREDENTIALS) {
-                                echo "Logged in to DockerHub"
-                            }
-                        }
-                    }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials',
+                                usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
                 }
+            }
+        }
 
         stage('Push Docker image') {
             steps {
