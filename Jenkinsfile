@@ -19,37 +19,37 @@ pipeline {
 
         stage('Build JAR with Gradle') {
             steps {
-                sh './gradlew clean build'
+                bat './gradlew clean build'
             }
         }
 
         stage('Build Docker image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
+                bat 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
         stage('Login to DockerHub') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                bat 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
 
         stage('Push Docker image') {
             steps {
-                sh 'docker push $DOCKER_IMAGE'
+                bat 'docker push $DOCKER_IMAGE'
             }
         }
 
         stage('Apply Kubernetes Deployment') {
             steps {
-                sh 'kubectl apply -f deployment.yaml'
+                bat 'kubectl apply -f deployment.yaml'
             }
         }
 
         stage('Apply Kubernetes Service') {
             steps {
-                sh 'kubectl apply -f service.yaml'
+                bat 'kubectl apply -f service.yaml'
             }
         }
     }
