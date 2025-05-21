@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         DOCKER_IMAGE = 'emirhancebiroglu/devops-hw4:latest'
-        REGISTRY_URL = 'https://registry-1.docker.io/v2/'
+        DOCKER_REGISTRY  = 'https://index.docker.io/v2/'
     }
 
     triggers {
@@ -30,14 +30,21 @@ pipeline {
             }
         }
 
-        stage('Login to DockerHub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials',
-                                usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
+        stage('Docker Login') {
+                    steps {
+                        script {
+                            withCredentials([usernamePassword(
+                                credentialsId: 'docker-credentials',
+                                usernameVariable: 'DOCKER_USER',
+                                passwordVariable: 'DOCKER_PASS'
+                            )]) {
+                                bat """
+                                    docker login --username %DOCKER_USER% --password %DOCKER_PASS%
+                                """
+                            }
+                        }
+                    }
                 }
-            }
-        }
 
         stage('Push Docker image') {
             steps {
