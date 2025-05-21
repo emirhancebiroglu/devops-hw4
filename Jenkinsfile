@@ -30,15 +30,10 @@ pipeline {
         }
 
         stage('Login to DockerHub') {
-          steps {
-            // binds your 'dockerhub-credentials' ID to two env vars
-            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
-                bat 'echo Logging in as %DOCKERHUB_USER%'
-                bat 'echo %DOCKERHUB_PASS% | docker login -u %DOCKERHUB_USER% --password-stdin'
+            steps {
+                sh 'echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin'
             }
-          }
         }
-
 
         stage('Push Docker image') {
             steps {
