@@ -32,15 +32,9 @@ pipeline {
         stage('Login to DockerHub') {
           steps {
             // binds your 'dockerhub-credentials' ID to two env vars
-            withCredentials([usernamePassword(
-              credentialsId: 'dockerhub-credentials',
-              usernameVariable: 'DOCKERHUB_USER',
-              passwordVariable: 'DOCKERHUB_PASS'
-            )]) {
-              // echo the username for sanity, but NOT the password
-              bat 'echo Logging in as %DOCKERHUB_USER%'
-              // perform login; reads the password from stdin safely
-              bat 'echo %DOCKERHUB_PASS% | docker login -u %DOCKERHUB_USER% --password-stdin'
+            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
+                bat 'echo Logging in as %DOCKERHUB_USER%'
+                bat 'echo %DOCKERHUB_PASS% | docker login -u %DOCKERHUB_USER% --password-stdin'
             }
           }
         }
