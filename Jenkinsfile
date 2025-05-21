@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Jenkins > Credentials'dan alınmalı
         DOCKER_IMAGE = 'emirhancebiroglu/devops-hw4:latest'
+        REGISTRY_URL = ''
     }
 
     triggers {
@@ -30,10 +31,15 @@ pipeline {
         }
 
         stage('Login to DockerHub') {
-            steps {
-                sh 'echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin'
-            }
-        }
+                    steps {
+                        script {
+                            // Login only, no push here
+                            docker.withRegistry(REGISTRY_URL, DOCKERHUB_CREDENTIALS) {
+                                echo "Logged in to DockerHub"
+                            }
+                        }
+                    }
+                }
 
         stage('Push Docker image') {
             steps {
