@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds-id') // Jenkins > Credentials'dan alınmalı
-        DOCKER_IMAGE = 'seymahandekli/devops-hw4:latest'
+        DOCKER_IMAGE = 'emirhancebiroglu/devops-hw4:latest'
     }
 
     triggers {
@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Clone repository') {
             steps {
-                git url: 'https://github.com/seymahandekli/devops-hw4.git', branch: 'master'
+                git url: 'https://github.com/emirhancebiroglu/devops-hw4.git', branch: 'master'
             }
         }
 
