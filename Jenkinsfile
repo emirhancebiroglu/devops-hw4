@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds-id') // Jenkins > Credentials'dan alınmalı
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Jenkins > Credentials'dan alınmalı
         DOCKER_IMAGE = 'emirhancebiroglu/devops-hw4:latest'
     }
 
